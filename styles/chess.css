@@ -1,0 +1,47 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color:gray;    
+}
+
+.chess-board {
+    display: flex;
+    flex-wrap: wrap;
+    width: 480px;
+    height: 480px;
+}
+
+.white {
+    background-color: white;
+    width: 60px;
+    height: 60px; 
+}
+
+.black {
+    background-color: black;
+    width: 60px;
+    height: 60px; 
+}
+
+.row-labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height:480px;
+    font-size: 2em;
+    margin-right: 10px;
+}
+
+.column-labels {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+    width: 480px;   
+    font-size: 2em;  
+    
+}
+
+
+
