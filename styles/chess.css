@@ -12,51 +12,53 @@ body {
     width: 480px;
     height: 480px;
 }
-
-.white {
+.cell{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
+
     width: 60px;
     height: 60px;
-    transition: 1s;
+
+    outline-color: black;
+    outline-style: solid;
+    outline-width: 1px;
 }
 
-.black {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: brown;
-    width: 60px;
-    height: 60px;
-    transition: 1s;
+.white {    
+    background-color: white;   
 }
+
+.black {    
+    background-color: purple;    
+}
+
 .black:hover, .white:hover {
+    transition: 1s;
     transform: scale(1.5);    
 }
 
-.row-labels {
+.symbols, .row-labels, .column-labels{
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 480px;
+    justify-content: space-around;   
     font-size: 2em;
+}
+
+.row-labels {
+    height: 480px;
+    flex-direction: column;    
     margin-right: 10px;
 }
-    
 
-
-
-.column-labels {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 480px;
-    font-size: 2em;
+.column-labels {  
+    width: 480px;  
+    flex-direction: row;        
 }
 
 .shaps {
     display: flex;
     width: 50px;
+}
+#A{
+    background-color: blue;
 }
