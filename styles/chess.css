@@ -3,7 +3,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color:gray;    
+    background-color: gray;
 }
 
 .chess-board {
@@ -14,34 +14,49 @@ body {
 }
 
 .white {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: white;
     width: 60px;
-    height: 60px; 
+    height: 60px;
+    transition: 1s;
 }
 
 .black {
-    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: brown;
     width: 60px;
-    height: 60px; 
+    height: 60px;
+    transition: 1s;
+}
+.black:hover, .white:hover {
+    transform: scale(1.5);    
 }
 
 .row-labels {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height:480px;
+    height: 480px;
     font-size: 2em;
     margin-right: 10px;
 }
+    
+
+
 
 .column-labels {
     display: flex;
     flex-direction: row;
-    justify-content:space-around;
-    width: 480px;   
-    font-size: 2em;  
-    
+    justify-content: space-around;
+    width: 480px;
+    font-size: 2em;
 }
 
-
-
+.shaps {
+    display: flex;
+    width: 50px;
+}
