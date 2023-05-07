@@ -51,8 +51,9 @@ main {
     margin-top: 7vh;
     display: flex;
     align-items: center;
-    justify-content: center;
-    
+    justify-content: center;    
+    transition: 5s;
+
 }
 
 .details-image {
@@ -68,12 +69,12 @@ main {
 .details-title {
     background-color: beige;
     font-style: italic;
-    font-size: 1em;
+    font-size: 2em;
     position: absolute;
     left: -6vw;
     bottom: 2vh;
     font-family: airstream;
-    
+
 }
 
 .thumbnails-list {
@@ -87,7 +88,8 @@ main {
     padding-right: 20px;
     margin-top: 6vh;
 }
-.thumbnails-anchor{
+
+.thumbnails-anchor {
     text-decoration: none;
 }
 
@@ -100,11 +102,12 @@ main {
     min-height: calc(var(--thumbnails-img-height) + var(--thumbnails-title-height));
     margin-top: 3vh;
 }
-.thumbnails-item:hover{
+
+.thumbnails-item:hover {
     border-color: green;
     transform: scale(1.1);
     transition: 5ms;
-    
+
 }
 
 .thumbnails-image {
@@ -119,6 +122,33 @@ main {
     background-color: burlywood;
     height: var(--thumbnails-title-height);
 }
+
+main.hidden {
+    background-color: cornsilk;
+}
+
+.hidden .details-section {
+    display: none;
+}
+
+.hidden{
+
+}
+
+.is-point{
+transform: scale(0.001);
+transition: 0s;
+}
+
+
+.hide-button {
+    font-size: 0.8em;
+    position: absolute;
+    top: 4vh;
+    right: 5vw;
+    background-color: transparent;
+}
+
 
 
 @media(min-width: 650px) {
@@ -156,10 +186,16 @@ main {
     }
 
     .details-title {
-        font-size: 1.3em;
+        font-size: 2em;
     }
 
-
+    .hidden .thumbnails-list {
+        flex-wrap: wrap;
+        max-height: 100vh;
+        flex-direction: row;
+        justify-content: space-around;
+        overflow: hidden;
+    }
 }
 
 @media(min-width:1000px) {
@@ -168,10 +204,11 @@ main {
         height: 37vw;
         border-radius: 20%;
     }
-    html{
-        font-size: 1.5rem;
-    }
-    
 
+    html {
+        font-size: 2rem;
+    }
+
+    
 
 }
