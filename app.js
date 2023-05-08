@@ -138,6 +138,7 @@ function myToStringInt(number, radix) {
     return result;
 }
 
+
 console.log(myToStringInt(5, 2));
 console.log((5).toString(2));
 
@@ -148,6 +149,8 @@ console.log(myToStringInt(-55484, 23));
 console.log((-55484).toString(23));
 
 
+
+
 errors = 0;
 for (radix = 2; radix < 37; radix ++) {
     for (i = -99999; i < 99999; i++) {
@@ -156,4 +159,9 @@ for (radix = 2; radix < 37; radix ++) {
         }
     }
 }
-console.log("Errors count = " + errors + ".");
+
+if(errors == 0){
+    console.log("Congratulations! The test will pass successfully!");
+} else {
+    console.log("The test is not passed, the number of errors: " + errors + ". Try again.");
+}
