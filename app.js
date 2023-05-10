@@ -307,5 +307,9 @@ function testMyParseInt() {
 // console.log(`3 == "3" is ${3 == "3"}`);
 // console.log(`3 === "3" is ${3 === "3"}`);
 
-
-
+function sum (op1, op2 = 20) {
+    return op1 + op2
+}
+let a1 = 8;
+let a2;
+console.log(`a1 = ${a1}, a2 = ${a2} sum(a1, a2) is ${sum(a1, a2)}`)
