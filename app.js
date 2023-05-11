@@ -98,11 +98,11 @@ function getListItems(array) {
 
 // bodyId.innerHTML = getOrderedList(getArrayRandomIntNumbers(10, 0, 2));
 
-function getMatrixRandomIntNumbers(rows, columns, min, max, MinInclusive = true, MaxInclusive = true){
+function getMatrixRandomIntNumbers(rows, columns, min, max){
     let matrix = [];
     matrix.length = rows;
     matrix = [...matrix];
-    return matrix.map(() => getArrayRandomIntNumbers(columns, min, max, MinInclusive, MaxInclusive));
+    return matrix.map(() => getArrayRandomIntNumbers(columns, min, max, true, true));
 }
 
 console.log(getMatrixRandomIntNumbers(6,6,0,1));
