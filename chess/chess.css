@@ -1,0 +1,61 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: gray;
+}
+
+.chess-board {
+    display: flex;
+    flex-wrap: wrap;
+    width: 480px;
+    height: 480px;
+}
+.cell{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 60px;
+    height: 60px;
+
+    outline-color: black;
+    outline-style: solid;
+    outline-width: 1px;
+}
+
+.white {    
+    background-color: white;   
+}
+
+.black {    
+    background-color: purple;    
+}
+
+.black:hover, .white:hover {
+    transition: 1s;
+    transform: scale(1.5);    
+}
+
+.symbols, .row-labels, .column-labels{
+    display: flex;
+    justify-content: space-around;   
+    font-size: 2em;
+}
+
+.row-labels {
+    height: 480px;
+    flex-direction: column;    
+    margin-right: 10px;
+}
+
+.column-labels {  
+    width: 480px;  
+    flex-direction: row;        
+}
+
+.shaps {
+    display: flex;
+    width: 50px;
+}

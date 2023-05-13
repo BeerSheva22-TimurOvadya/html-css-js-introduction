@@ -14,26 +14,26 @@
 //method "map"
 // console.log([1, 2, 3].map(n => n ** 2));
 
-function getRandomIntNumber(min, max, MinInclusive = true, MaxInclusive = false) {
-    if (!MinInclusive) {
-        min++;
-    }
-    if (MaxInclusive) {
-        max++;
-    }
-    return min < max ? Math.trunc(Math.random() * (max - min) + min) : NaN;
-}
+// function getRandomIntNumber(min, max, MinInclusive = true, MaxInclusive = false) {
+//     if (!MinInclusive) {
+//         min++;
+//     }
+//     if (MaxInclusive) {
+//         max++;
+//     }
+//     return min < max ? Math.trunc(Math.random() * (max - min) + min) : NaN;
+// }
 
 // console.log(getRandomIntNumber(8, 99)); 
 // console.log(getRandomIntNumber(1, 1, false, true)); 
 
 
-function getArrayRandomIntNumbers(nNumbers, min, max, MinInclusive = true, MaxInclusive = false) {
-    let res = [];
-    res.length = nNumbers;
-    res = [...res];
-    return res.map(() => getRandomIntNumber(min, max, MinInclusive, MaxInclusive));
-}
+// function getArrayRandomIntNumbers(nNumbers, min, max, MinInclusive = true, MaxInclusive = false) {
+//     let res = [];
+//     res.length = nNumbers;
+//     res = [...res];
+//     return res.map(() => getRandomIntNumber(min, max, MinInclusive, MaxInclusive));
+// }
 
 // console.log(getArrayRandomIntNumbers(5, -5, 14))
 // console.log(getArrayRandomIntNumbers(8, 1000, 5000, false, true ));
@@ -86,23 +86,82 @@ function getArrayRandomIntNumbers(nNumbers, min, max, MinInclusive = true, MaxIn
 // const output3 = getOrderedList(inputArray3);
 // console.log(output3);
 
-function getOrderedList(array) {    
-    return `<ol style="text-align:center; list-style:none">${getListItems(array)}</ol>`
-}
+// function getOrderedList(array) {    
+//     return `<ol style="text-align:center; list-style:none">${getListItems(array)}</ol>`
+// }
 
-function getListItems(array) {
-    return array.map(v => `<li style="width: 30px; height:30px; border: solid; solid 1px gray;
-    background-color: ${v ? 'black' : 'white'}"></li>`).join('');
-}
+// function getListItems(array) {
+//     return array.map(v => `<li style="width: 30px; height:30px; border: solid; solid 1px gray;
+//     background-color: ${v ? 'black' : 'white'}"></li>`).join('');
+// }
 
 
 // bodyId.innerHTML = getOrderedList(getArrayRandomIntNumbers(10, 0, 2));
 
-function getMatrixRandomIntNumbers(rows, columns, min, max){
-    let matrix = [];
-    matrix.length = rows;
-    matrix = [...matrix];
-    return matrix.map(() => getArrayRandomIntNumbers(columns, min, max, true, true));
+// function getMatrixRandomIntNumbers(rows, columns, min, max){
+//     let matrix = [];
+//     matrix.length = rows;
+//     matrix = [...matrix];
+//     return matrix.map(() => getArrayRandomIntNumbers(columns, min, max, true, true));
+// }
+
+// console.log(getMatrixRandomIntNumbers(6,6,0,1));
+
+
+// function getChessBoard(rows, columns, isBlackFirst) {
+//     let matrix = getMatrixRandomIntNumbers(rows, columns, 0, 1);
+//     let res = matrix.map(v => {
+//         let res = `<ol class="row"> ${getChessRow(v, isBlackFirst)} </ol>`;
+//         isBlackFirst = !isBlackFirst;
+//         return res;
+//     });
+//     return <ol> ${res.join('')} </ol>;
+// }
+
+// function getChessRow(array, isBlackFirst){
+//     let res = array.map(v => {
+//         let res = `<li style ="background-color: ${isBlackFirst ? 'black' : 'white'}"</li`;
+//         isBlackFirst = !isBlackFirst;
+//         return res;
+//     })
+//     return res.join('');
+// }
+
+// bodyId.innerHTML = getChessBoard(8, 8, false);
+
+function arraycopy(src, posSrc, dst, posDst, length) {
+    let elementsToCopy = src.slice(posSrc, posSrc + length);
+    dst.splice(posDst, length, ...elementsToCopy);
 }
 
-console.log(getMatrixRandomIntNumbers(6,6,0,1));
+let src = [1, 2, 3, 4, 5];
+let dst = [6, 7, 8, 9, 10];
+arraycopy(src, 1, dst, 2, 2);
+console.log(dst);
+
+
+
+function moveElement(array, position, shift) {
+    let newPosition = position + shift;
+
+    if (newPosition < 0) {
+        newPosition = 0;
+    } else if (newPosition > array.length) {
+        newPosition = array.length;
+    }
+
+    let elementArray = array.slice(position, position + 1);
+    array.splice(position, 1);
+    array.splice(newPosition, 0, elementArray[0]);
+    return array;
+}
+
+console.log(moveElement([1, 2, 3, 4, 5], 2, 1)); // [ 1, 2, 4, 3, 5 ]
+
+console.log(moveElement([1, 2, 3, 4, 5], 2, -1)); // [ 1, 3, 2, 4, 5 ]
+
+console.log(moveElement([1, 2, 3, 4, 5], 0, -1)); // [ 1, 2, 3, 4, 5 ]
+
+console.log(moveElement([1, 2, 3, 4, 5], 2, 20)); // [ 1, 2, 4, 5, 3 ]
+
+console.log(moveElement([1, 2, 3, 4, 5], 2, -20)); // [ 3, 1, 2, 4, 5 ]
