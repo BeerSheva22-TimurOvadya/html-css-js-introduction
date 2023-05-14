@@ -129,39 +129,79 @@
 
 // bodyId.innerHTML = getChessBoard(8, 8, false);
 
-function arraycopy(src, posSrc, dst, posDst, length) {
-    let elementsToCopy = src.slice(posSrc, posSrc + length);
-    dst.splice(posDst, length, ...elementsToCopy);
-}
+// function arraycopy(src, posSrc, dst, posDst, length) {
+//     let elementsToCopy = src.slice(posSrc, posSrc + length);
+//     dst.splice(posDst, length, ...elementsToCopy);
+// }
 
-let src = [1, 2, 3, 4, 5];
-let dst = [6, 7, 8, 9, 10];
-arraycopy(src, 1, dst, 2, 2);
-console.log(dst);
+// let src = [1, 2, 3, 4, 5];
+// let dst = [6, 7, 8, 9, 10];
+// arraycopy(src, 1, dst, 2, 2);
+// console.log(dst);
 
 
 
-function moveElement(array, position, shift) {
-    let newPosition = position + shift;
 
-    if (newPosition < 0) {
-        newPosition = 0;
-    } else if (newPosition > array.length) {
-        newPosition = array.length;
-    }
+// function moveElement(array, position, shift) {
+//     let newPosition = position + shift;
 
-    let elementArray = array.slice(position, position + 1);
-    array.splice(position, 1);
-    array.splice(newPosition, 0, elementArray[0]);
-    return array;
-}
+//     if (newPosition < 0) {
+//         newPosition = 0;
+//     } else if (newPosition > array.length - 1) {
+//         newPosition = array.length - 1;
+//     }
 
-console.log(moveElement([1, 2, 3, 4, 5], 2, 1)); // [ 1, 2, 4, 3, 5 ]
+//     let elementArray = array.slice(position, position + 1);
+//     array.splice(position, 1);
+//     array.splice(newPosition, 0, elementArray[0]);
 
-console.log(moveElement([1, 2, 3, 4, 5], 2, -1)); // [ 1, 3, 2, 4, 5 ]
+//     return array;
+// }
 
-console.log(moveElement([1, 2, 3, 4, 5], 0, -1)); // [ 1, 2, 3, 4, 5 ]
+// console.log(moveElement([1, 2, 3, 4, 5], 2, 1)); // [ 1, 2, 4, 3, 5 ]
 
-console.log(moveElement([1, 2, 3, 4, 5], 2, 20)); // [ 1, 2, 4, 5, 3 ]
+// console.log(moveElement([1, 2, 3, 4, 5], 2, -1)); // [ 1, 3, 2, 4, 5 ]
 
-console.log(moveElement([1, 2, 3, 4, 5], 2, -20)); // [ 3, 1, 2, 4, 5 ]
+// console.log(moveElement([1, 2, 3, 4, 5], 0, -1)); // [ 1, 2, 3, 4, 5 ]
+
+// console.log(moveElement([1, 2, 3, 4, 5], 2, 20)); // [ 1, 2, 4, 5, 3 ]
+
+// console.log(moveElement([1, 2, 3, 4, 5], 2, -20)); // [ 3, 1, 2, 4, 5 ]
+
+
+// const arI = [1, 2, 3];
+// let index = arS.indexOf(6);
+// console.log(index);
+
+//reduce
+
+// console.log([1, 2, 3].reduce((res, cur) => res + cur, 10));
+// console.log(1, 2, 3)
+// console.log([1, 2, 3].reduce((res, cur) => Math.min(res, cur)));
+// console.log([1, 2, 3].reduce((res, cur) => cur < res ? cur : res));
+// console.log([1, 2, 3].reduce((res, cur) => {
+//     if (cur < res) {
+//         return cur;
+//     } else {
+//         return res;
+//     }
+// }));
+
+
+// console.log([1, 2, 3].reduce((res, cur) => cur < res ? cur : res));
+
+// const arS = [10, 20, -70, 100, 6, -10, 0];
+
+// let minMax = arS.reduce((acc, val) => {
+//     if (val < acc[0]) acc[0] = val;
+//     if (val > acc[1]) acc[1] = val;
+//     return acc;
+// }, [Infinity, -Infinity]);
+
+// console.log(minMax);
+
+
+const ar10 = [2, 3, 123, 200, 99, -5, 'abc'];
+// ar10.length = 0;
+// console.log(ar10)
+console.log (ar10.sort((a, b) => a - b));
