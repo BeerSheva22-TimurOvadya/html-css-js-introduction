@@ -1,8 +1,8 @@
 //configuration
 const nMoves = 6;
+
 const words = ["apple", "bison", "crane", "daisy", "eagle", "fairy", "ghost", "hinge", "igloo", "joker"];
 let correctWord = [];
-
 
 //elements
 const inputElements = [
@@ -10,8 +10,9 @@ const inputElements = [
     document.getElementById("input-id-2"),
     document.getElementById("input-id-3"),
     document.getElementById("input-id-4"),
-    document.getElementById("input-id-5")
+    document.getElementById("input-id-5"),
 ];
+
 const checkButtonElement = document.getElementById("check-id");
 const resultMessageElement = document.getElementById("game-result");
 const playAgainButtonElement = document.getElementById("play-again-id");
@@ -21,7 +22,7 @@ let count = 0;
 
 //functions
 function game() {
-    let guess = inputElements.map(input => input.value);
+    let guess = inputElements.map((input) => input.value);
     let correctGuess = true;
     guess.forEach((letter, index) => {
         if (letter == correctWord[index]) {
@@ -55,7 +56,7 @@ function startGame() {
     count = 0;
     correctWord = words[Math.floor(Math.random() * words.length)];
     checkButtonElement.disabled = false;
-    inputElements.forEach(input => {
+    inputElements.forEach((input) => {
         input.readOnly = false;
         input.value = "";
         input.style.backgroundColor = "white";
@@ -66,7 +67,7 @@ function startGame() {
 
 function finishGame() {
     checkButtonElement.disabled = true;
-    inputElements.forEach(input => {
+    inputElements.forEach((input) => {
         input.readOnly = true;
     });
     playAgainButtonElement.disabled = false;
@@ -75,4 +76,21 @@ function finishGame() {
 //Actions
 checkButtonElement.addEventListener("click", game);
 playAgainButtonElement.addEventListener("click", startGame);
+
+inputElements.forEach((input, index) => {
+    input.addEventListener("keyup", function (event) {
+        if (event.key == "Enter" && count < nMoves) {
+            game();
+        }
+        if (event.key == "ArrowLeft") {
+            inputElements[index - 1].focus();
+        }
+        if (event.key == "ArrowRight") {
+            inputElements[index + 1].focus();
+        }
+    });
+});
+
 startGame();
+
+
