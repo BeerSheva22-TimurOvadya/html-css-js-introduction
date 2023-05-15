@@ -83,14 +83,12 @@ inputElements.forEach((input, index) => {
             game();
         }
         if (event.key == "ArrowLeft") {
-            inputElements[index - 1].focus();
+            inputElements[index - 1].focus();            
         }
         if (event.key == "ArrowRight") {
-            inputElements[index + 1].focus();
+            inputElements[index + 1].focus();            
         }
     });
 });
 
 startGame();
-
-

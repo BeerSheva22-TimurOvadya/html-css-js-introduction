@@ -1,0 +1,58 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: gray;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.game-info {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 1em;
+}
+
+.input-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 1em;
+}
+
+.input-box {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid black;
+    font-size: 24px;
+    color: white;
+    background-color: black;
+    text-transform: uppercase;
+}
+
+button {
+    padding: 10px;
+    background-color: green;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    border: none;
+    margin-bottom: 1em;
+}
+
+button:disabled {
+    background-color: gray;
+    color: #444;
+}
+
+#game-result {
+    font-size: 1.5em;
+    margin-bottom: 1em;
+}
+
+#riddle {
+    font-size: 1.2em;
+    margin-bottom: 1em;
+}
