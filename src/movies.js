@@ -1,20 +1,29 @@
-// var / const/ let - виды переменных
+import moviesObj from '../movies.json' assert { type: 'json' };
 const detailsImageElemet = document.querySelector('.details-image');
 const detailsTitleElement = document.querySelector('.details-title');
-const thumbnailsAnchors = document.querySelectorAll('.thumbnails-anchor');
 const detailsSectionElement = document.querySelector('.details-section');
+
+const thumbnailsList = document.querySelector('.thumbnails-list');
+
 const POINT_CLASS = 'is-point';
 const mainSection = document.querySelector('main');
 const HIDDEN = 'hidden';
+console.log(moviesObj.httpPrefix);
 
-// for (let i = 0; i < thumbnailsAnchors.length; i++) {
-//     thumbnailsAnchors[i].addEventListener("click", function () {
-//         setDetails(thumbnailsAnchors[i]);
-//     })
-// }
+// prettier-ignore
+thumbnailsList.innerHTML = moviesObj.results.map((movie) => {
+    return `<li class="thumbnails-item">
+            <a href="#" class="thumbnails-anchor" data-details-image="${moviesObj.httpPrefix}${movie.backdrop_path}" 
+            data-details-text="${movie.overview.slice(0, 100)}">
+            <img src="${moviesObj.httpPrefix}${movie.poster_path}" class="thumbnails-image">
+            <span class="thumbnails-title">${movie.title}</span>                
+            </a>
+        </li> `;
+}).join('');
 
 
-//заменили вместо цикла 16.05.2023
+const thumbnailsAnchors = document.querySelectorAll('.thumbnails-anchor');
+
 thumbnailsAnchors.forEach((anchor) =>
     anchor.addEventListener('click', setDetails.bind(undefined, anchor)),
 );
@@ -28,7 +37,6 @@ function setDetails(anchor) {
 
 function showDetails() {
     mainSection.classList.remove(HIDDEN);
-
     setTimeout(function () {
         detailsSectionElement.classList.remove(POINT_CLASS);
     });
@@ -37,3 +45,4 @@ function showDetails() {
 function hideDetails() {
     mainSection.classList.add(HIDDEN);
 }
+window.hideDetails = hideDetails;

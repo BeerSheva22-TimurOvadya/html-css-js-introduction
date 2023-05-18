@@ -130,10 +130,10 @@ main.hidden {
 .hidden .details-section {
     display: none;
 }
-
+/* 
 .hidden{
 
-}
+} */
 
 .is-point{
 transform: scale(0.001);
@@ -179,6 +179,7 @@ transition: 0s;
     main {
         flex-direction: row-reverse;
         justify-content: start;
+        
     } 
     .details-image {
         width: 50vw;
