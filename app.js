@@ -59,7 +59,6 @@ async function getTemperatures(lat, long, startDate, days, hourFrom, hourTo) {
     //returns:
     //array of objects{date: <string containing date YYYY-MM-DD with no time>,
     // time: <hour namber from the given range>, temperature: <number>, apparentTemperature: <number>}
-
     const endDate = getEndDate(startDate, days);
     const url = getUrl(lat, long, startDate, endDate);
     const response = await fetch(url);
