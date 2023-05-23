@@ -1,85 +1,98 @@
-//what's wrong
-// function sleep(timeout) {
-//     let flRunning = true;
-//     setTimeout(() => (flRunning = false), timeout);
-//     while (flRunning);
+// async function getTemperatures(lat, long) {
+//     const response = await fetch(
+//         `https://api.open-meteo.com/v1/gfs?latitude=${lat}&longitude=${long}&hourly=temperature_2m,apparent_temperature&timezone=IST`,
+//     );
+//     return response.json();
 // }
-// sleep(1000);
-// don't works (freezes)
+// getTemperatures(31.89, 34.81)
+//     .then((data) => console.log(data.hourly.temperature_2m[13], data.hourly.time[13]))
+//     .catch((error) => console.log(error));
 
-// function sleep(timeout, ...functions) {
-//     function sleepFn() {
-//         functions.forEach((f) => f());
-//     }
-//     setTimeout(sleepFn, timeout);
+// написаь функциональность, принимает lat и long, принимает дату, принимает количество дней(0-16), часы(от и до)
+// возвращает колчиство объектов
+
+// async function getTemperatures(lat, long, startDate, days, hourFrom, hourTo){
+// Rarameters: lat - latitude, long - longitude, startDate - ISO date of forecast,
+// days - forecast days, (hourFrom, hourTo) - closed range of the hours for each day
+//returns:
+//array of objects{date: <string containing date YYYY-MM-DD with no time>,
+// time: <hour namber from the given range>, temperature: <number>, apparentTemperature: <number>}
 // }
 
-// sleep(2000, f1, f2, f3);
+//Моё решение:
+// async function getTemperatures(lat, long, startDate, days, hourFrom, hourTo) {
+//     const endDate = calculateEndDate(startDate, days);
+//     const response = await fetch(
+//         `https://api.open-meteo.com/v1/gfs?latitude=${lat}&longitude=${long}&hourly=temperature_2m,apparent_temperature&start_date=${startDate}&end_date=${endDate}`,
+//     );
+//     const data = await response.json();
+//     const results = data.hourly.time
+//         .map((time, i) => {
+//             const hour = new Date(time).getHours();
+//             if (hour >= hourFrom && hour <= hourTo) {
+//                 return {
+//                     date: time.split('T')[0],
+//                     time: hour,
+//                     temperature: data.hourly.temperature_2m[i],
+//                     apparentTemperature: data.hourly.apparent_temperature[i],
+//                 };
+//             }
+//         })
+//         .filter(Boolean);
 
-function sleep(timeout) {
-    return new Promise((resolve) => setTimeout(() => resolve(), timeout));
-}
+//     return results;
+// }
 
-// const promise = sleep(2000);
-// promise
-//     .then(() => f1())
-//     .then(() => f2())
-//     .then(() => f3());
+// function calculateEndDate(startDate, days) {
+//     const endDate = new Date(startDate);
+//     endDate.setDate(endDate.getDate() + days);
+//     return endDate.toISOString().substring(0, 10);
+// }
 
-function f1() {
-    console.log('f1 performed');
-}
-function f2() {
-    console.log('f2 performed');
-}
-function f3() {
-    console.log('f3 performed');
-}
+getTemperatures(31.89, 34.81, '2023-05-23', 1, 20, 22)
+    .then((data) => console.log(data))
+    .catch((error) => console.log(error));
 
-function getId(predicate) {
-    const ids = [123, 124, 125, 126];
-    const index = ids.findIndex(predicate);
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            return index < 0 ? reject('id not foud') : resolve(ids[index]);
-        }, 1000);
+async function getTemperatures(lat, long, startDate, days, hourFrom, hourTo) {
+    // Rarameters: lat - latitude, long - longitude, startDate - ISO date of forecast,
+    // days - forecast days, (hourFrom, hourTo) - closed range of the hours for each day
+    //returns:
+    //array of objects{date: <string containing date YYYY-MM-DD with no time>,
+    // time: <hour namber from the given range>, temperature: <number>, apparentTemperature: <number>}
+
+    const endDate = getEndDate(startDate, days);
+    const url = getUrl(lat, long, startDate, endDate);
+    const response = await fetch(url);
+    const data = await response.json();
+    const dates = getDataForHours(data.hourly.time, hourFrom, hourTo);
+    const temperatures = getDataForHours(data.hourly.temperature_2m, hourFrom, hourTo);
+    const apparentTemperatures = getDataForHours(data.hourly.apparent_temperature, hourFrom, hourTo);
+    return dates.map((d, index) => {
+        const tokens = d.split('T');
+        const date = tokens[0];
+        const time = tokens[1];
+        return {
+            date,
+            time,
+            temperature: temperatures[index],
+            apparentTemperature: apparentTemperatures[index],
+        };
     });
 }
 
-function getCar(id) {
-    const cars = {
-        123: 'suzuki',
-        124: 'hundai',
-        125: 'honda',
-    };
-    const car = cars[id];
-    return new Promise((resolve, reject) =>
-        setTimeout(() => (car ? resolve(car) : reject('no car found'), 1000)),
-    );
+function getEndDate(startDateStr, days) {
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(startDate.setDate(startDate.getDate() + days));
+    return endDate.toISOString().substring(0, 10);
 }
 
-// function displayCar(predicate) {
-//     return getId(predicate)
-//         .then((id) => getCar(id))
-//         .then((car) => console.log(car))
-//         .catch((error) => {
-//             console.log(error);
-//             // return 'mersedes';
-//         });
-//     // .finally(() => console.log('finally'))
-// }
-
-async function displayCar(predicate) {
-    // await sleep(20000)
-    try {
-        const id = await getId(predicate);
-        const car = await getCar(id);
-        console.log(car);
-    } catch (error) {
-        console.log(error);
-    }
+function getUrl(lat, long, startDate, endDate) {
+    return `https://api.open-meteo.com/v1/gfs?latitude=${lat}&longitude=${long}&hourly=temperature_2m,apparent_temperature&timezone=IST&start_date=${startDate}&end_date=${endDate}`;
 }
 
-displayCar((id) => id == 126).then(() => console.log('thanks & good bye'));
-// then(() => console.log('wait for the data ...'));
-console.log('waiting for the data ...');
+function getDataForHours(array, hourFrom, hourTo){
+    return array.filter((__, index) =>{
+        const rem = index % 24;
+        return rem >= hourFrom && rem <= hourTo
+    })
+}
