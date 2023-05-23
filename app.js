@@ -1,123 +1,85 @@
-//JS OOP/ ptototype
-
-// write myForEach to call anyarray with the same behavier as the standard forach
-// write myMap to call from any array
-// write myFilter
-// write myReduce
-
-// реализуй метод ниже
-// Array.prototype.myForEach = function () {
+//what's wrong
+// function sleep(timeout) {
+//     let flRunning = true;
+//     setTimeout(() => (flRunning = false), timeout);
+//     while (flRunning);
 // }
-// My custom forEach
+// sleep(1000);
+// don't works (freezes)
 
-Array.prototype.myForEach = function (el) {
-    for (let i = 0; i < this.length; i++) {
-        el(this[i], i, this);
-    }
-};
-
-Array.prototype.myMap = function (el) {
-    let res = [];
-    for (let i = 0; i < this.length; i++) {
-        res.push(el(this[i], i, this));
-    }
-    return res;
-};
-
-Array.prototype.myFilter = function (el) {
-    let result = [];
-    for (let i = 0; i < this.length; i++) {
-        if (el(this[i], i, this)) {
-            result.push(this[i]);
-        }
-    }
-    return result;
-};
-// реализуй myReduce
-Array.prototype.myReduce = function (callback, initialValue) {
-    let accumulator = initialValue == undefined ? this[0] : initialValue;
-    for (let i = initialValue == undefined ? 1 : 0; i < this.length; i++) {
-        accumulator = callback(accumulator, this[i], i, this);
-    }
-    return accumulator;
-};
-
-//Tests:
-// let testArray = [1, 2, 3, 4, 5];
-// let objectArray = [{ a: 1 }, { b: 2 }, { c: 3 }, { d: 4 }, { e: 5 }];
-
-// console.log('myForEach test:');
-// objectArray.myForEach((value) => console.log(value));
-// console.log('Standard forEach test:');
-// objectArray.forEach((value) => console.log(value));
-
-// console.log('myMap test:');
-// console.log(testArray.myMap((value) => value * 2));
-// console.log('Standard map test:');
-// console.log(testArray.map((value) => value * 2));
-
-// console.log('myFilter test:');
-// console.log(objectArray.myFilter((value) => 'a' in value));
-// console.log('Standard filter test:');
-// console.log(objectArray.filter((value) => 'a' in value));
-
-// console.log('myReduce test:');
-// console.log(testArray.myReduce((acc, value) => acc + value, 0));
-// console.log('Standard reduce test:');
-// console.log(testArray.reduce((acc, value) => acc + value, 0));
-
-// console.log('myReduce with objects test:');
-// console.log(objectArray.myReduce((acc, value) => Object.assign(acc, value), {}));
-// console.log('Standard reduce with objects test:');
-// console.log(objectArray.reduce((acc, value) => Object.assign(acc, value), {}));
-
-
-
-// class Deferred {
-//     constructor() {
-//         this.queue = [];
-//         this.value = undefined;
-//         this.resolved = false;
+// function sleep(timeout, ...functions) {
+//     function sleepFn() {
+//         functions.forEach((f) => f());
 //     }
-
-//     then(callback) {
-//         if (this.resolved) {
-//             this.value = callback(this.value);
-//         } else {
-//             this.queue.push(callback);
-//         }
-//         return this;
-//     }
-
-//     resolve(value) {
-//         this.value = value;
-//         this.resolved = true;
-//         while (this.queue.length > 0) {
-//             let callback = this.queue.shift();
-//             this.value = callback(this.value);
-//         }
-//     }
+//     setTimeout(sleepFn, timeout);
 // }
 
+// sleep(2000, f1, f2, f3);
 
-//второе решение
-// class Deferred {
-//     ar = [];
-//     then(func) {
-//         this.ar.push(func);
-//     }
-//     resolve(el) {
-//         this.ar.forEach(func => el = func(el));
-//     }
+function sleep(timeout) {
+    return new Promise((resolve) => setTimeout(() => resolve(), timeout));
+}
+
+// const promise = sleep(2000);
+// promise
+//     .then(() => f1())
+//     .then(() => f2())
+//     .then(() => f3());
+
+function f1() {
+    console.log('f1 performed');
+}
+function f2() {
+    console.log('f2 performed');
+}
+function f3() {
+    console.log('f3 performed');
+}
+
+function getId(predicate) {
+    const ids = [123, 124, 125, 126];
+    const index = ids.findIndex(predicate);
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            return index < 0 ? reject('id not foud') : resolve(ids[index]);
+        }, 1000);
+    });
+}
+
+function getCar(id) {
+    const cars = {
+        123: 'suzuki',
+        124: 'hundai',
+        125: 'honda',
+    };
+    const car = cars[id];
+    return new Promise((resolve, reject) =>
+        setTimeout(() => (car ? resolve(car) : reject('no car found'), 1000)),
+    );
+}
+
+// function displayCar(predicate) {
+//     return getId(predicate)
+//         .then((id) => getCar(id))
+//         .then((car) => console.log(car))
+//         .catch((error) => {
+//             console.log(error);
+//             // return 'mersedes';
+//         });
+//     // .finally(() => console.log('finally'))
 // }
 
+async function displayCar(predicate) {
+    // await sleep(20000)
+    try {
+        const id = await getId(predicate);
+        const car = await getCar(id);
+        console.log(car);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-// const d = new Deferred()
-// d.then(function(res){ console.log("1 ", res); return "a"; });
-// d.then(function(res){ console.log("2 ", res); return "b"; });
-// d.then(function(res){ console.log("3 ", res); return "c"; });
-// d.resolve('hello');
-// 1  hello
-// 2  a
-// 3  b
-
+displayCar((id) => id == 126).then(() => console.log('thanks & good bye'));
+// then(() => console.log('wait for the data ...'));
+console.log('waiting for the data ...');
