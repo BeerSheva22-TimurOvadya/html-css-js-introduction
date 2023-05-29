@@ -10,6 +10,8 @@ export default class EmployeeForm {
     #fillSection() {
         this.#parentElement.innerHTML =
          `<button id="button-id">Add random employee data</button>`
+         
+
     }
     buttonHasPressed() {
         return new Promise(resolved => {
