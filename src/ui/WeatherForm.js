@@ -18,10 +18,12 @@ export default class WeatherForm {
     #maxDays;
     #cities;
     #parentId;
-    constructor(parentId, cities, maxDays) {
+    #submitCallback;
+    constructor(parentId, cities, maxDays, submitCallback) {
         this.#parentId = parentId;
         this.#maxDays = maxDays;
         this.#cities = cities;
+        this.#submitCallback = submitCallback;
         this.#formData = {};
         this.#buildForm();
         this.#setElements();
@@ -53,10 +55,11 @@ export default class WeatherForm {
         this.#daysElement.onchange = this.#daysHandler.bind(this);
         this.#hourToElement.onchange = this.#hourToHandler.bind(this);
         this.#hourFromElement.onchange = this.#hourFromHandler.bind(this);
-        //FIXME
+        
+        
         this.#formElement.onsubmit = (event) => {
             event.preventDefault();
-            console.log(this.#formData);
+            this.#submitCallback(this.#formData);
         };
     }
     #setElements() {
