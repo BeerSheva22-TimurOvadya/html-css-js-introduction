@@ -1,34 +1,30 @@
-import openMeteoConfig from './config/service-config.json' assert { type: 'json' };
+import openMeteoConfig from './config/service-config.json' assert {type: 'json'};
 import OpenMeteoService from './service/OpenMeteoService.js';
 import DataGrid from './ui/DataGrid.js';
 import WeatherForm from './ui/WeatherForm.js';
-import { getISODateStr, getEndDate } from './util/date-functions.js';
-
+import {getEndDate} from './util/date-functions.js'
+//constants definition
 const columns = [
     { field: 'date', headerName: 'Date' },
     { field: 'time', headerName: 'Time' },
     { field: 'temperature', headerName: 'Temperature' },
-    { field: 'apparentTemperature', headerName: 'Fealt Temp' },
-];
+    { field: 'apparentTemperature', headerName: 'Fealt Temp' }
+]
 
-const form = new WeatherForm('form-place', Object.keys(openMeteoConfig.cities), openMeteoConfig.maxDays, updateTable);
+//objects
+const form = new WeatherForm("form-place",
+ Object.keys(openMeteoConfig.cities), openMeteoConfig.maxDays);
 const openMeteoService = new OpenMeteoService(openMeteoConfig.baseUrl);
-const table = new DataGrid('table-place', columns);
+const table = new DataGrid("table-place", columns)
 
-function updateTable(formData) {
-    const latLong = openMeteoConfig.cities[formData.city];
-    const { lat, long } = latLong;
-    const { startDate, days, hourFrom, hourTo } = formData;
-    openMeteoService
-        .getTemperatures(lat, long, startDate, getEndDate(startDate, +days), +hourFrom, +hourTo)
-        .then((data) => table.fillData(data));
-}
-
-// // Call updateTable initially
-// updateTable({
-//     city: 'Rehovot',
-//     startDate: getISODateStr(new Date()),
-//     days: 2,
-//     hourFrom: 3,
-//     hourTo: 5,
-// });
+    async function run() {
+        while(true) {
+            const fromFormData = await form.getDataFromForm();
+            const { startDate, days, hourFrom, hourTo, city } = fromFormData;
+            const {lat, long} = openMeteoConfig.cities[city];
+            const temperatures = await openMeteoService.getTemperatures(lat, long, startDate, getEndDate(startDate, days),
+            hourFrom, hourTo);
+            table.fillData(temperatures);
+        }
+    }
+    run();
