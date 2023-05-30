@@ -2,6 +2,9 @@ import { count } from '../util/number-functions.js';
 import { getRandomInt } from '../util/random.js';
 const minId = 100000;
 const maxId = 1000000;
+//TODO by using setTimeout update the CompanyService code that 
+// each public method returns Promise that after some timeout moves in the (resolved) 
+// fulfilled state
 
 export default class CompanyService {
     #employees;
@@ -36,5 +39,8 @@ export default class CompanyService {
             const max = min + interval - 1;
             return { min, max, count: e[1]};
         });
+    }
+    getAllEmployees(){
+        //TODO returns promise with array of all employee objects
     }
 }
