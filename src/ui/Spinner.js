@@ -1,16 +1,14 @@
 export default class Spinner {
+    #spinnerElement
     constructor(parentId) {
-        this.spinnerElement = document.createElement('div');
-        this.spinnerElement.classList.add('spinner'); 
-        document.getElementById(parentId).appendChild(this.spinnerElement);
-        this.stop();
+        const parentElement = document.getElementById(parentId);
+        parentElement.innerHTML = `<div class="spinner" hidden></div>`;
+        this.#spinnerElement = parentElement.childNodes[0];
     }
-
     start() {
-        this.spinnerElement.style.display = 'block';
+        this.#spinnerElement.hidden = false;
     }
-
     stop() {
-        this.spinnerElement.style.display = 'none';
+        this.#spinnerElement.hidden = true;
     }
 }
