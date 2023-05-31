@@ -6,6 +6,7 @@ import { getRandomEmployee } from './util/random.js';
 import statisticsConfig from './config/statistics-config.json' assert { type: 'json' };
 import employeesConfig from './config/employees-config.json' assert { type: 'json' };
 import { range } from './util/number-functions.js';
+import Spinner from './ui/Spinner.js';
 const N_EMPLOYEES = 100;
 
 //employee model
@@ -40,22 +41,42 @@ const employeeForm = new EmployeeForm('employees-form-place');
 const employeeTable = new DataGrid('employees-table-place', employeeColumns);
 const ageStatistics = new DataGrid('age-statistics-place', statisticsColumns);
 const salaryStatistics = new DataGrid('salary-statistics-place', statisticsColumns);
+const spinner = new Spinner('menu-place');
 
 function menuHandler(index) {
     if (index == statisticsIndex) {
-        ageStatistics.fillData(companyService.getStatistics(age.field, age.interval));
-        salaryStatistics.fillData(companyService.getStatistics(salary.field, salary.interval));
+        spinner.start();  // запуск спиннера перед асинхронными операциями
+        Promise.all([
+            companyService.getStatistics(age.field, age.interval),
+            companyService.getStatistics(salary.field, salary.interval)
+        ])
+        .then(([ageData, salaryData]) => {
+            ageStatistics.fillData(ageData);
+            salaryStatistics.fillData(salaryData);
+        })
+        .finally(() => spinner.stop());  // остановка спиннера после завершения всех операций
+    } else if (index == employeesIndex) {
+        spinner.start();
+        companyService.getAllEmployees()
+            .then(data => {
+                employeeTable.fillData(data);
+            })
+            .finally(() => spinner.stop());
     }
-    //TODO handling Employees table menu hitting
 }
+
+const employeesIndex = sections.findIndex((s) => s.title == 'Empolyees');
 
 async function run() {
     while (true) {
         await employeeForm.buttonHasPressed();
+        spinner.start();
         const employee = getRandomEmployee(minSalary, maxSalary, minYear, maxYear, departments);
-        const emloyeeAdded = companyService.addEmployee(employee);
-        // employeeTable.insertRow(emloyeeAdded );
-        // console.log('Employee has been added');
+        companyService.addEmployee(employee)
+            .then(addedEmployee => {
+                employeeTable.insertRow(addedEmployee);
+                spinner.stop();
+            });
     }
 }
 range(0, N_EMPLOYEES).forEach(() =>

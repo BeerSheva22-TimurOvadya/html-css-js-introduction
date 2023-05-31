@@ -1,12 +1,16 @@
 export default class Spinner {
-    //TODO
     constructor(parentId) {
-        //TODO
+        this.spinnerElement = document.createElement('div');
+        this.spinnerElement.classList.add('spinner'); 
+        document.getElementById(parentId).appendChild(this.spinnerElement);
+        this.stop();
     }
+
     start() {
-        //TODO
+        this.spinnerElement.style.display = 'block';
     }
+
     stop() {
-        //TODO
+        this.spinnerElement.style.display = 'none';
     }
 }

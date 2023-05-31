@@ -11,13 +11,18 @@ export default class CompanyService {
    
     constructor() {
         this.#employees = {};
-       
     }
+
     addEmployee(employee) {
-        const id = this.#getId();
-        this.#employees[id] = { ...employee, id };
-        return this.#employees[id]
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const id = this.#getId();
+                this.#employees[id] = { ...employee, id };
+                resolve(this.#employees[id]);
+            }, 2000);
+        });
     }
+
     #getId() {
         let id;
         do {
@@ -25,22 +30,31 @@ export default class CompanyService {
         } while (this.#employees[id]);
         return id;
     }
-    getStatistics(field, interval) {
-        let array = Object.values(this.#employees);
-        const currentYear = new Date().getFullYear();
 
-        if (field == 'birthYear') {
-            array = array.map((e) => ({ age: currentYear - e.birthYear }));
-            field = 'age';
-        }
-        const statisticsObj = count(array, field, interval);
-        return Object.entries(statisticsObj).map((e) => {
-            const min = e[0] * interval;
-            const max = min + interval - 1;
-            return { min, max, count: e[1]};
+    getStatistics(field, interval) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                let array = Object.values(this.#employees);
+                const currentYear = new Date().getFullYear();
+                if (field == 'birthYear') {
+                    array = array.map((e) => ({ age: currentYear - e.birthYear }));
+                    field = 'age';
+                }
+                const statisticsObj = count(array, field, interval);
+                resolve(Object.entries(statisticsObj).map((e) => {
+                    const min = e[0] * interval;
+                    const max = min + interval - 1;
+                    return { min, max, count: e[1]};
+                }));
+            }, 4000);
         });
     }
-    getAllEmployees(){
-        //TODO returns promise with array of all employee objects
+
+    getAllEmployees() {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve(Object.values(this.#employees));
+            }, 4000);
+        });
     }
 }
