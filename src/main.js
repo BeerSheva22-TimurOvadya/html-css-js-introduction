@@ -35,10 +35,13 @@ const statisticsColumns = [
 const menu = new ApplicationBar('menu-place', sections, menuHandler);
 const companyService = new CompanyService();
 const employeeForm = new EmployeeForm('employees-form-place');
-const employeeTable = new DataGrid('employees-table-place', employeeColumns);
+const employeeTable = new DataGrid('employees-table-place', employeeColumns, true);
 const ageStatistics = new DataGrid('age-statistics-place', statisticsColumns);
 const salaryStatistics = new DataGrid('salary-statistics-place', statisticsColumns);
 const spinner = new Spinner('spinner-place');
+
+document.getElementById('employees-table-place').insertAdjacentHTML('beforeend', '<button id="delete-button">Delete Selected</button>');
+document.getElementById('delete-button').addEventListener('click', deleteSelectedEmployees);
 
 employeeForm.addHandler(async (employee) => {
     await action(companyService.addEmployee.bind(companyService, employee));
@@ -79,5 +82,14 @@ function createRandomEmployees() {
         ),
     );
     return Promise.all(promises);
+}
+
+async function deleteSelectedEmployees() {
+    const selectedIds = employeeTable.getSelectedIds();
+    const promises = selectedIds.map(id => companyService.deleteEmployee(id));
+    await Promise.all(promises);
+    // Обновите таблицу работников после удаления.
+    const employees = await action(companyService.getAllEmployees.bind(companyService));
+    employeeTable.fillData(employees);
 }
 action(createRandomEmployees);

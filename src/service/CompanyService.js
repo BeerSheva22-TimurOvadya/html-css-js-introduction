@@ -44,7 +44,12 @@ export default class CompanyService {
     getAllEmployees() {
         return getPromise(Object.values(this.#employees), 1000);
     }
+    async deleteEmployee(id) {
+        delete this.#employees[id];
+        await getPromise(null, 1000);  // Задержка в 1 секунду перед выполнением.
+    }
 }
 function getPromise(state, timeout) {
     return new Promise((resolve) => setTimeout(() => resolve(state), timeout));
 }
+
