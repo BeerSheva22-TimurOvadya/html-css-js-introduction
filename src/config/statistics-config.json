@@ -3,7 +3,7 @@
         "field": "birthYear",
         "interval": 10
     },
-    "salary": {
+    "salary" : {
         "field": "salary",
         "interval": 10000
     }

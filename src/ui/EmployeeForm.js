@@ -1,57 +1,99 @@
-import employeesConfig from '../config/employees-config.json' assert { type: 'json' };
 export default class EmployeeForm {
     #dataObj;
     #formElement;
-    constructor(parentId) {
+    #nameElement;
+    #salaryElement;
+    #departmentElement;
+    #yearElement;
+    #parentId;
+    #configData
+    constructor(parentId, configData) {
+        this.#parentId = parentId;
         const parentElement = document.getElementById(parentId);
-        this.#dataObj = {};
-        this.#fillForm(parentElement, parentId);
-        this.#setElements(parentId);
+        parentElement.innerHTML = `<form class="form-control" id="${this.#getId('form')}">
+                                   </form>`;
+        this.#formElement = document.getElementById(this.#getId('form'))
+
+        this.#configData = configData;
+
+
+
     }
+    hideForm() {
+        this.#formElement.innerHTML = '';
+    }
+    #getId(id) {
+        return `${this.#parentId}-${id}-id`;
+    }
+    fillForm(objToUpdate) {
+        this.#dataObj = objToUpdate || {}
+        this.#formElement.innerHTML =
+            `<form class="form-control" id="${this.#getId('form')}">
+            <div class="input-item">
+                <input id="${this.#getId('name')}" name="name" placeholder="enter name"
+                 ${objToUpdate ? `value=${objToUpdate.name}` : ''} required>
+                <select id="${this.#getId('department')}" name="department" 
+                ${objToUpdate ? `value=${objToUpdate.department}` : ''} required>
+                    ${objToUpdate ? '' :
+                `<option value hidden selected disabled>--Select Department--</option>`}
+                </select>    
 
-    #fillForm(parentElement, parentId) {
-        const departmentOptions = employeesConfig.departments
-            .map((dept) => `<option value="${dept}">${dept}</option>`)
-            .join('');
-
-        parentElement.innerHTML = `
-            <form class="form-control" id="${parentId}-form-id">
-                <input type="text" name="name" placeholder="enter name" required>
-                <input type="number" name="birthYear" min="1950" max="2003" placeholder="enter birth year" required>
-                <select name="department" required>
-                    <option value="" disabled selected>Select a department</option>
-                    ${departmentOptions}
-                </select>
-                <div class="radio-group">
-                    <div class="radio-control">
-                        <input id="female-id" type="radio" name="gender" required value="female" unchecked>
-                        <label for="female-id">Female</label>
-                    </div> 
-
-                    <div class="radio-control">
-                        <input id="male-id" type="radio" name="gender" required value="male" unchecked>
-                        <label for="male-id">Male</label>
-                    </div>                 
+            </div>
+            <div class="input-item">
+                <input id="${this.#getId('birthYear')}" name="birthYear" type="number" placeholder="enter birth year"
+                ${objToUpdate ? `value=${objToUpdate.birthYear} readOnly` : ''} required>
+                <input id="${this.#getId('salary')}" name="salary" type="number"placeholder="enter salary"
+                ${objToUpdate ? `value=${objToUpdate.salary} ` : ''} required>
+            </div>
+            <div class="radio-group">
+                <div class="radio-control">
+                    <input id="${this.#getId('female')}" type="radio" name="gender"  ${objToUpdate ?
+                `${objToUpdate.gender == "female" ? 'checked' : "unchecked disabled"} ` : 'unchecked'} required value="female" >
+                    <label for="${this.#getId('female')}">female</label>
                 </div>   
-                <input type="number" name="salary" min="7000" max="50000" placeholder="enter salary" required>
-                <button type="submit">Submit</button>
-            </form>`;
-    }
+                <div class="radio-control">
+                <input id="${this.#getId('male')}" type="radio" name="gender"  ${objToUpdate ?
+                `${objToUpdate.gender == "male" ? 'checked' : "unchecked disabled"} ` : 'unchecked'} required value="male" >
+                    <label for="${this.#getId('male')}">male</label>
+                </div> 
+                 
+            </div>   
+            
+            <button type="submit" >Submit</button>
+        </form>   
 
-    #setElements(parentId) {
-        this.#formElement = document.getElementById(`${parentId}-form-id`);
+            `
+        this.#setElements();
+        this.#setOptions();
     }
-
+    #setOptions() {
+        const { minYear, maxYear, minSalary, maxSalary, departments } = this.#configData
+        this.#departmentElement.innerHTML +=
+            departments.map(d => `<option value=${d}
+             ${this.#dataObj.department == d ? 'selected' : 'uselected'}>${d}</option>`).join('');
+        this.#salaryElement.min = minSalary * 1000;
+        this.#salaryElement.max = maxSalary * 1000;
+        this.#yearElement.min = minYear;
+        this.#yearElement.max = maxYear;
+    }
+    #setElements() {
+        this.#formElement = document.getElementById(this.#getId('form'));
+        this.#departmentElement = document.getElementById(this.#getId('department'));
+        this.#nameElement = document.getElementById(this.#getId('name'));
+        this.#salaryElement = document.getElementById(this.#getId('salary'));
+        this.#yearElement = document.getElementById(this.#getId('birthYear'));
+    }
     addHandler(submitFn) {
         this.#formElement.onsubmit = async (event) => {
             event.preventDefault();
             const formData = new FormData(this.#formElement);
-            this.#dataObj.name = formData.get('name');
-            this.#dataObj.birthYear = formData.get('birthYear');
-            this.#dataObj.department = formData.get('department');
             this.#dataObj.gender = formData.get('gender');
             this.#dataObj.salary = formData.get('salary');
+            this.#dataObj.birthYear = formData.get('birthYear');
+            this.#dataObj.name = formData.get('name');
+            this.#dataObj.department = formData.get('department');
             await submitFn(this.#dataObj);
-        };
+            this.#formElement.reset();
+        }
     }
 }
